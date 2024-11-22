@@ -94,19 +94,20 @@ class ChatClient(QWidget):
 
     def add_message_bubble(self, message, position="left"):
         """
-        显示消息气泡：左侧为接收的消息，右侧为发送的消息
+        显示消息气泡：左侧为接收的消息，右侧为发送的消息，并支持文字选择
         """
         bubble_color = "#E5E5E5" if position == "left" else "#4CAF50"
         text_color = "#000000" if position == "left" else "#FFFFFF"
         alignment = Qt.AlignLeft if position == "left" else Qt.AlignRight
 
-        # 气泡框
+        # 创建气泡框，并启用文字选择功能
         bubble = QLabel(message)
         bubble.setStyleSheet(
             f"background-color: {bubble_color}; color: {text_color}; font-size: 12pt; padding: 10px; "
             f"border-radius: 10px; max-width: {self.max_bubble_width}px;"
         )
         bubble.setWordWrap(True)
+        bubble.setTextInteractionFlags(Qt.TextSelectableByMouse)  # 启用鼠标选择文字
 
         # 气泡布局
         bubble_layout = QHBoxLayout()
@@ -123,6 +124,7 @@ class ChatClient(QWidget):
 
         self.chat_content.addWidget(bubble_container)
         self.chat_area.verticalScrollBar().setValue(self.chat_area.verticalScrollBar().maximum())
+
 
     def send_message(self):
         message = self.message_entry.text().strip()
